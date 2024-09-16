@@ -8,13 +8,22 @@ const Contacts = () => {
 
     const contactsContext = useContext(ContactContext);
 
-    const { contacts } = contactsContext;
+    const { contacts, filtered } = contactsContext;
+
+    if(contacts.length === 0) {
+        return( <h4>Please add a COntact</h4> )
+    }
 
     return(
         <Fragment>
-            {contacts.map(contact => (
+            {filtered !== null ?
+            filtered.map(contact => (
                 <ContactItem contact={contact} key={contact.id} />
-            ))}
+            )) :
+            contacts.map(contact => (
+                <ContactItem contact={contact} key={contact.id} />
+            )) 
+        }
         </Fragment>
     );
 };
