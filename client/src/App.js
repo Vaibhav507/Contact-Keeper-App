@@ -7,6 +7,7 @@ import About from './Components/Pages/About';
 import Register from "./Components/Auth/Register";
 import Login from "./Components/Auth/Login";
 import Alerts from "./Components/Layout/Alerts";
+import PrivateRoute from "./Components/Routing/PrivateRoute";
 
 import setAuthToken from "./utils/setAuthToken";
 
@@ -23,25 +24,26 @@ if(localStorage.token) {
 const App = () => {
   return (
     <AuthState>
-      <ContactState>
-        <AlertState>
-          <Router>
-            <Fragment>
-              <Navbar />
-              <div className="container">
-                <Alerts />
-                <Routes>
-                  <Route path="/" Component={Home}   />
-                  <Route path="/about" Component={About}   />
-                  <Route path="/register" Component={Register}   />
-                  <Route path="/login" Component={Login}   />
-                </Routes>
-              </div>
-            </Fragment>
-          </Router>
-        </AlertState>
-      </ContactState>
-    </AuthState>
+  <ContactState>
+    <AlertState>
+      <Router>
+        <Fragment>
+          <Navbar />
+          <div className="container">
+            <Alerts />
+            <Routes>
+              <Route path="/" element={<PrivateRoute element={<Home />} />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </div>
+        </Fragment>
+      </Router>
+    </AlertState>
+  </ContactState>
+</AuthState>
+
   );
 }
 

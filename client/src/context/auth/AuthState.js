@@ -26,12 +26,11 @@ const AuthState = props => {
 
     const [ state, dispatch ] = useReducer(authReducer, initialState);
 
-    //Load User
-    const loadUser = async () => {
+     //Load User
+     const loadUser = async () => {
 
-        if(window.localStorage.token) {
-            setAuthToken(window.localStorage.token);
-        } 
+        setAuthToken(window.localStorage.token);
+        
         
         try {
             
@@ -43,20 +42,20 @@ const AuthState = props => {
             });
             
         } catch (error) {
+            console.log(Date.now());
             dispatch({
                 type:AUTH_ERROR
-            })
+            });
         }
     };
-
-
+    
     //Register User
     const register = async formData => {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
-        }
+        };
 
         try {
 
@@ -73,15 +72,39 @@ const AuthState = props => {
             dispatch({
                 type: REGISTER_FAIL,
                 payload: error.response.data.msg
-            })
+            });
+        }
+    };
+
+    //Login User
+    const login = async formData => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        try {
+
+            const res = await axios.post('/api/auth', formData, config);
+            
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: res.data
+            });
+
+            loadUser();
+            
+        } catch (error) {
+            dispatch({
+                type: LOGIN_FAIL,
+                payload: error.response.data.msg
+            });
         }
     }
 
-
-    //Login User
-
-
     //Logout User
+    const logout = () => dispatch({ type: LOGOUT });
 
 
     //Clear Errors
@@ -102,7 +125,9 @@ const AuthState = props => {
             user: state.user,
             register,
             clearErrors,
-            loadUser
+            loadUser,
+            login,
+            logout
         }}>  
             { props.children }
         </AuthContext.Provider>

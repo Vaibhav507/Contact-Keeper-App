@@ -9,9 +9,7 @@ const Home = () => {
     const authContext = useContext(AuthContext);
     
     useEffect(() => {
-        if (localStorage.token) {
             authContext.loadUser();
-        }
         // eslint-disable-next-line
     }, [ ]);
 

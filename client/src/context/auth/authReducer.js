@@ -19,41 +19,48 @@ export default (state, action) => {
                 loading: false,
                 user: action.payload
             };
+    
 
-            case REGISTER_SUCCESS:
-                {
-                    window.localStorage.setItem('token', action.payload.token);
-                    return {
-                        ...state,
-                        ...action.payload,
-                        isAuthenticated: true,
-                        loading: false
-                    };
-                }
+        case REGISTER_SUCCESS:
+        case LOGIN_SUCCESS:
+                //console.log("Before setting token:", localStorage.getItem('token'));
+                //console.log("Token to be stored:", action.payload.token);
+                localStorage.setItem('token', action.payload.token);
+                //console.log("After setting token:", localStorage.getItem('token'));
+                return {
+                    ...state,
+                    ...action.payload,
+                    isAuthenticated: true,
+                    loading: false
+                };
             
             
-
         case REGISTER_FAIL:
-            window.localStorage.removeItem('token');
-            return {
-                ...state,
-                token: null,
-                isAuthenticated: false,
-                loading: false,
-                user: null,
-                error: action.payload
-            };
+        case AUTH_ERROR:
+        case LOGIN_FAIL:
+            {
+                //localStorage.removeItem('token');
+                return {
+                    ...state,
+                    token: null,
+                    isAuthenticated: false,
+                    loading: false,
+                    user: null,
+                    error: action.payload
+                };
+            }
+                
+            
+            
         
         case CLEAR_ERRORS: 
             return {
                 ...state,
                 error: null
             };
-
         
-        
-        case AUTH_ERROR:
-            window.localStorage.removeItem('token');
+        case LOGOUT:
+            localStorage.removeItem('token');
             return {
                 ...state,
                 token: null,
