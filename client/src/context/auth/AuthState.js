@@ -29,7 +29,7 @@ const AuthState = props => {
      //Load User
      const loadUser = async () => {
 
-        setAuthToken(window.localStorage.token);
+        setAuthToken(localStorage.token);
         
         
         try {
